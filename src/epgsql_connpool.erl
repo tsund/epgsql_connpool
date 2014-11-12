@@ -7,6 +7,7 @@
 -export([name/1]).
 -export([available/2, status/1, reserve/2, release/2]).
 -export([transaction/2, transaction/3, transaction/4]).
+-export([squery/2, equery/3]).
 -export([dirty/2, dirty/3, dirty/4]).
 
 %% gen_server
@@ -46,6 +47,9 @@ reserve(Name, Timeout) ->
 
 release(Name, Pid) ->
     gen_server:cast(name(Name), {release, self(), Pid}).
+
+squery(Name, Sql) -> transaction(Name, fun(_Db) -> epgsql_query:squery(Sql) end, []).
+equery(Name, Sql, Params) -> transaction(Name, fun(_Db) -> epgsql_query:equery(Sql, Params) end, []).
 
 transaction(Name, F) -> transaction(Name, F, []).
 transaction(Name, F, Opts) -> transaction(Name, F, [], Opts).
