@@ -48,9 +48,6 @@ reserve(Name, Timeout) ->
 release(Name, Pid) ->
     gen_server:cast(name(Name), {release, self(), Pid}).
 
-squery(Name, Sql) -> transaction(Name, fun(_Db) -> epgsql_query:squery(Sql) end, []).
-equery(Name, Sql, Params) -> transaction(Name, fun(_Db) -> epgsql_query:equery(Sql, Params) end, []).
-
 transaction(Name, F) -> transaction(Name, F, []).
 transaction(Name, F, Opts) -> transaction(Name, F, [], Opts).
 transaction(Name, F, Args, Opts) ->
@@ -93,6 +90,8 @@ transaction(Name, CPid, F, Args, _Opts, TTimeout) ->
             {aborted, E}
     end.
 
+squery(Name, Sql) -> dirty(Name, fun(_Db) -> epgsql_query:squery(Sql) end, []).
+equery(Name, Sql, Params) -> dirty(Name, fun(_Db) -> epgsql_query:equery(Sql, Params) end, []).
 
 dirty(Name, F) -> dirty(Name, F, []).
 dirty(Name, F, Opts) -> dirty(Name, F, [], Opts).
