@@ -19,49 +19,49 @@
 -export([get_parameter/1]).
 
 squery(Sql) ->
-    pgsql:squery(cpid(), Sql).
+    epgsql:squery(cpid(), Sql).
 
 equery(Sql) ->
-    pgsql:equery(cpid(), Sql).
+    epgsql:equery(cpid(), Sql).
 
 equery(Sql, Parameters) ->
-    pgsql:equery(cpid(), Sql, Parameters).
+    epgsql:equery(cpid(), Sql, Parameters).
 
 parse(Sql) ->
-    pgsql:parse(cpid(), Sql).
+    epgsql:parse(cpid(), Sql).
 
 parse(Sql, Types) ->
-    pgsql:parse(cpid(), Sql, Types).
+    epgsql:parse(cpid(), Sql, Types).
 
 parse(Name, Sql, Types) ->
-    pgsql:parse(cpid(), Name, Sql, Types).
+    epgsql:parse(cpid(), Name, Sql, Types).
 
 bind(Statement, Parameters) ->
-    pgsql:bind(cpid(), Statement, Parameters).
+    epgsql:bind(cpid(), Statement, Parameters).
 
 bind(Statement, PortalName, Parameters) ->
-    pgsql:bind(cpid(), Statement, PortalName, Parameters).
+    epgsql:bind(cpid(), Statement, PortalName, Parameters).
 
 execute(S) ->
-    pgsql:execute(cpid(), S).
+    epgsql:execute(cpid(), S).
 
 execute(S, N) ->
-    pgsql:execute(cpid(), S, N).
+    epgsql:execute(cpid(), S, N).
 
 execute(S, PortalName, N) ->
-    pgsql:execute(cpid(), S, PortalName, N).
+    epgsql:execute(cpid(), S, PortalName, N).
 
 describe(Statement) ->
-    pgsql:describe(cpid(), Statement).
+    epgsql:describe(cpid(), Statement).
 
 describe(Type, Name) ->
-    pgsql:describe(cpid(), Type, Name).
+    epgsql:describe(cpid(), Type, Name).
 
 sync() ->
-    pgsql:sync(cpid()).
+    epgsql:sync(cpid()).
 
 get_parameter(Name) ->
-    pgsql:get_parameter(cpid(), Name).
+    epgsql:get_parameter(cpid(), Name).
 
 cpid() ->
     case get(epgsql_conn) of

@@ -49,7 +49,7 @@ init(Name) ->
         {error, not_found} ->
             {stop, {error, missing_configuration}};
         {ok, L} ->
-            case apply(pgsql, connect, L) of
+            case apply(epgsql, connect, L) of
                 {ok, Pid} ->
                     ok = epgsql_connpool:available(Name, self()),
                     {ok, #state{pool = Name, pid = Pid}};
@@ -58,7 +58,7 @@ init(Name) ->
             end
     end.
 
-terminate(shutdown, #state{pid = P}) -> pgsql:close(P).
+terminate(shutdown, #state{pid = P}) -> epgsql:close(P).
 
 handle_call(begin_transaction, _From, #state{pid = P} = State) ->
     ok = begin_t(P),
@@ -110,13 +110,13 @@ code_change(_OldVsn, State, _Extra) -> {ok, State}.
 do_release(Name) -> epgsql_connpool:available(Name, self()).
 
 begin_t(Pid) ->
-    {ok, [], []} = pgsql:squery(Pid, "BEGIN"),
+    {ok, [], []} = epgsql:squery(Pid, "BEGIN"),
     ok.
 
 commit_t(Pid) ->
-    {ok, [], []} = pgsql:squery(Pid, "COMMIT"),
+    {ok, [], []} = epgsql:squery(Pid, "COMMIT"),
     ok.
 
 rollback_t(Pid) ->
-    {ok, [], []} = pgsql:squery(Pid, "ROLLBACK"),
+    {ok, [], []} = epgsql:squery(Pid, "ROLLBACK"),
     ok.
